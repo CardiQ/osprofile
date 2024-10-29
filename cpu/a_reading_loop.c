@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <stdio.h>
-#define LOOP
+//#define LOOP
 
 // uint64_t rdtsc() // linux
 // {
@@ -37,13 +37,17 @@ int main()
     return 0;
 #else
     // cycle time
-    uint64_t start, end;
+    uint64_t start, end, ave;
+    for(int i=0;i<1000;i++){
+        start = rdtscp();
+        // nothing for reading overhead, without any additions
+        end = rdtscp();
 
-    start = rdtscp();
-    // nothing for reading overhead, without any additions
-    end = rdtscp();
-
-    printf("reading overhead CPU cycles: %lu\n", end - start);
+        printf("reading overhead CPU cycles: %llu\n", end - start);
+        ave+= end-start;
+    }
+    ave/=1000;
+    printf("avg reading overhead CPU cycles: %llu\n", ave);
     return 0;
 #endif
 }

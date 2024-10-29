@@ -53,7 +53,7 @@ int main()
     // cycle time @ 2.30GHz
     uint64_t start, end;
     uint64_t ave = 0;
-    int args = 7; // manually change
+    int args = 0; // manually change
     int var = 0xfff;
 
     // typedef void (*func_ptr)();
@@ -62,19 +62,21 @@ int main()
     switch (args)
     {
     case 0:
+        
         for (int i = 0; i < 10; i++)
         {
 
+            
             start = rdtscp();
-
             // incremental overhead over number of arguments 0-7
             func0();
-
             end = rdtscp();
-
             fprintf(file, "0 CPU cycles: %ld\n", end - start);
             ave += end - start;
+            
         }
+        
+        
         break;
     case 1:
         for (int i = 0; i < 10; i++)
@@ -186,7 +188,9 @@ int main()
     }
 
     ave /= 10;
-    fprintf(file, "average CPU cycles: %ld\n, samples: 10", ave);
+    uint64_t overhead_r = 45;
+    //uint64_t overhead_l = 6;
+    fprintf(file, "average CPU cycles: %ld\n, samples: 10", ave-overhead_r);
 
     fclose(file);
 
